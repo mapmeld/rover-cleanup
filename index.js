@@ -14,7 +14,7 @@ var client = new Twitter({
 });
 
 app.get('/', function (req, res) {
-  client.get('search/tweets', {q: 'RobotTest2'}, function(error, coded, response){
+  client.get('search/tweets', {q: 'rovercleanup'}, function(error, coded, response){
     var tweets = coded.statuses;
     var gj = {
       type: 'FeatureCollection',
