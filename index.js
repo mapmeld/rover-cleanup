@@ -21,19 +21,36 @@ app.get('/', function (req, res) {
       features: []
     };
     for (var t = 0; t < tweets.length; t++) {
-      if (tweets[t].coordinates) {
+      var tweet = tweets[t];
+      var user = tweet.user;
+      var photo = [];
+      if (tweet.entities && tweet.entities.media && tweet.entities.media.length) {
+        for (var m = 0; m < tweet.entities.media.length; m++) {
+          photo.push(tweet.entities.media[m].media_url.split('http:')[1]);
+        }
+      }
+      if (tweet.coordinates) {
         gj.features.push({
           type: 'Feature',
           properties: {
-            userid: tweets[t].user.id_str,
-            username: tweets[t].user.name,
-            usertweet: tweets[t].user.screen_name
+            text: tweet.text,
+            photo: photo,
+            userid: user.id_str,
+            username: user.name,
+            usertweet: user.screen_name
           },
-          geometry: tweets[t].coordinates
+          geometry: tweet.coordinates
         });
       }
     }
     res.json(gj);
+  });
+});
+
+app.get('/test-tweet', function (req, res) {
+  client.get('search/tweets', {q: 'rovercleanup'}, function(error, coded, response){
+    var tweets = coded.statuses;
+    res.json(tweets);
   });
 });
 
