@@ -16,8 +16,15 @@
         margin: 0;
       }
 
-      img {
+      img.wide {
         max-width: 100%;
+        height: auto;
+      }
+
+      img.tall {
+        max-height: 400px;
+        max-height: 60vh;
+        width: auto;
       }
     </style>
   </head>
@@ -30,7 +37,7 @@
       }).addTo(map);
 
       var request = new XMLHttpRequest();
-      request.open('GET', '/', true);
+      request.open('GET', '/data', true);
 
       request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
@@ -38,7 +45,7 @@
           L.geoJson(data, {
             onEachFeature: function (feature, layer) {
               var firstPhoto = feature.properties.photo[0] || '//pbs.twimg.com/media/CiixdcOXAAI2okG.jpg';
-              var popup = '<img src="' + firstPhoto + '"/><br/>';
+              var popup = '<img src="' + firstPhoto.replace('?tall', '') + '" class="' + ((firstPhoto.indexOf('?tall') > -1) ? 'tall' : 'wide') + '"/><br/>';
               popup += feature.properties.text + '<br/>'
               popup += 'Photo by <a href="http://twitter.com/' + feature.properties.usertweet + '">' + feature.properties.username + '</a>'
               layer.bindPopup(popup);

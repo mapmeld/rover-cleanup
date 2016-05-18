@@ -14,6 +14,10 @@ var client = new Twitter({
 });
 
 app.get('/', function (req, res) {
+  res.redirect('/map.html');
+});
+
+app.get('/data', function (req, res) {
   client.get('search/tweets', {q: 'rovercleanup'}, function(error, coded, response){
     var tweets = coded.statuses;
     var gj = {
@@ -26,7 +30,11 @@ app.get('/', function (req, res) {
       var photo = [];
       if (tweet.entities && tweet.entities.media && tweet.entities.media.length) {
         for (var m = 0; m < tweet.entities.media.length; m++) {
-          photo.push(tweet.entities.media[m].media_url.split('http:')[1]);
+          var mediaURL = tweet.entities.media[m].media_url.split('http:')[1];
+          if (tweet.entities.media[m].sizes.large.h > tweet.entities.media[m].sizes.large.w) {
+            mediaURL += "?tall";
+          }
+          photo.push(mediaURL);
         }
       }
       if (tweet.coordinates) {
