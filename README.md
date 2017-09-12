@@ -1,5 +1,7 @@
 # rover-cleanup
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mapmeld/rover-cleanup.svg)](https://greenkeeper.io/)
+
 Mapping a Twitter hashtag and its photos
 
 / --> GeoJSON source
